@@ -1,40 +1,61 @@
 #!/usr/bin/python
 #get data input
 
-import sqlite3,feedparser,dbconnection
+import urllib,urllib2,feedparser,dbconnection,gdata.calendar,gdata.calendar.service
 
 class getdata:
 	dbconnection = None
 	
 	def __init__(this):
 		this.dbconnection = dbconnection.dbconnection()
+		
+		#for testing only:
+		print "Content-type: text/html\n"
 		this.update()
 		
 	def update(this): #poll all data feeds, add new data to db
 		#1 - get data feed urls from db
-		feedurls = this.dbconnection.getfeedurls()
-		print feedurls
+		feeds = this.dbconnection.getfeeds()
 		#2 - check data feeds for new items
-		feeds = []
-		for feedurl in feedurls:
-			feeds.append(feedparser.parse(feedurl[1]))
-			print feeds[-1]
-			if feeds[-1]['entries']: #if there are new entries
-				#print feeds[-1]['entries']
-				for entry in feeds[-1]['entries']:
-					#print entry['summary_detail']['value'],'-',entry['title'],'-',entry[]
-					print entry,'\n'
-					#do analysis to get roleid
-					#add new data to db
-		
-		
-		#login to gcal feed with:
-		#https://www.google.com/accounts/ClientLogin
-		#
-		#The POST body should contain a set of query parameters, as described in the following table. They should look like parameters passed by an HTML form, using the application/x-www-form-urlencoded content type.
-		#Parameter 	Description
-		#Email 	The user's email address.
-		#Passwd 	The user's password.
-		#source 	Identifies your client application. Should take the form companyName-applicationName-versionID; below, we'll use the name exampleCo-exampleApp-1.
-		#service 	The string cl, which is the service name for Google Calendar.			
+		feeddata = []
+		for feed in feeds:
+			if feed[2] == 2:	#feed is gcal
+				try:
+					#2.1 - auth to gcal
+					gcal = gdata.calendar.service.CalendarService(feed[3],feed[4])
+					gcal.ProgrammaticLogin()
+					#2.2 - get items	
+					items =  gcal.GetCalendarEventFeed(feed[1])
+					for item in items.entry:
+						print item
+						#for testing only:
+						roleid = 2 					
+						#do role analysis on new item
+						#roleid = this.analysis...
+						#add item to db
+						print item.title,item.link,item.when[0].start_time,item.link[0],"</br></br>"
+						isnew = this.dbconnection.additem(feed,roleid,item)
+						if isnew is False:
+							print "broken gcal"
+							break
+				except gdata.service.BadAuthentication, e:
+					print "Authentication error logging in: %s" % e
+					return
+				except Exception, e:
+					print "Error: %s" % e
+					return
+			else:	#feed is regular RSS/ATOM
+				feeddata = feedparser.parse(feed[1])
+				if feeddata['items']: #if there are new entries
+					for item in feeddata['items']:
+						#for testing only:
+						roleid = 2 					
+						#do role analysis on new item
+						#roleid = this.analysis...
+						#add item to db
+						print item['title'],item['summary_detail']['value'].encode('utf-8'),"</br></br>"
+						isnew = this.dbconnection.additem(feed,roleid,item)
+						if isnew is False:
+							print 'broken'
+							break
 getdata()
