@@ -27,16 +27,16 @@ class getdata:
 					#2.2 - get items	
 					items =  gcal.GetCalendarEventFeed(feed[1])
 					for item in items.entry:
-						print item
+						#print item
 						#for testing only:
 						roleid = 2 					
 						#do role analysis on new item
 						#roleid = this.analysis...
 						#add item to db
-						print item.title,item.link,item.when[0].start_time,item.link[0],"</br></br>"
+						#print item.title,item.link,item.when[0].start_time,item.link[0],"</br></br>"
 						isnew = this.dbconnection.additem(feed,roleid,item)
 						if isnew is False:
-							print "broken gcal"
+							print "broken1","</br>"
 							break
 				except gdata.service.BadAuthentication, e:
 					print "Authentication error logging in: %s" % e
@@ -45,7 +45,12 @@ class getdata:
 					print "Error: %s" % e
 					return
 			else:	#feed is regular RSS/ATOM
-				feeddata = feedparser.parse(feed[1])
+				if str(feed[3]).strip() is not "" and feed[3] is not None: #if feed requires auth, modify url with auth
+					feedurl = feed[1].replace("://","://%s:%s@" %(feed[3],feed[4]))
+					print "wooo:",feedurl,"</br>"
+					feeddata = feedparser.parse(feedurl)
+				else:
+					feeddata = feedparser.parse(feed[1])
 				if feeddata['items']: #if there are new entries
 					for item in feeddata['items']:
 						#for testing only:
@@ -53,9 +58,9 @@ class getdata:
 						#do role analysis on new item
 						#roleid = this.analysis...
 						#add item to db
-						print item['title'],item['summary_detail']['value'].encode('utf-8'),"</br></br>"
+						#print item['title'],item['summary_detail']['value'].encode('utf-8'),"</br></br>"
 						isnew = this.dbconnection.additem(feed,roleid,item)
 						if isnew is False:
-							print 'broken'
+							print 'broken2',"</br>"
 							break
 getdata()

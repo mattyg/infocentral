@@ -1,7 +1,8 @@
 #!/usr/bin/python
 #dbconnection
 
-import sqlite3,datetime,calendar
+import sqlite3,datetime,calendar,re
+from dateutil import parser
 
 class dbconnection:
 	cursor = None
@@ -32,21 +33,40 @@ class dbconnection:
 			iurl = item['link'].encode('utf-8')
 			itimestamp = calendar.timegm(item['date_parsed'])
 		elif feed[2] == 2:	#feed is gcal	
-			ititle = item.title
-			ibody = item.title
+			ititle = item.title.text
+			ibody = ititle
 			iauthor = ""
-			iurl = item.link[0]
-			itimestamp = item.when[0].start_time
-			print 'ey1'
+			iurl = item.link[0].href
+			#get timestamp
+			itimestamp = item.when[0].start_time #returns xs:datetime
+			dt = parser.parse(itimestamp) #returns python datetime
+			itimestamp = calendar.timegm(dt.timetuple()) #returns epoch
+		#escape data strings
+		ititle = this._escapequotes(ititle)
+		ibody = this._escapequotes(ibody)
+		iauthor = this._escapequotes(iauthor)
+		#remove img tags from data
+		p = re.compile(r'<.*?>')
+		ibody = p.sub('', ibody)
 		#check if item is in db
-		print ititle,ibody,"</br>"
 		query = "SELECT id FROM items WHERE title=\"%s\" AND body=\"%s\"" %(ititle,ibody)
-		result = this.cursor.execute(query)
+		print query,"</br>"
+		try:
+			result = this.cursor.execute(query)
+		except Exception, e:
+			print "exception",e,"</br>"
 		res = this.cursor.fetchone()
-		print 'ey2:',res,"</br>"
 		if res is not None and res is not "": #item is in db
 			return False
 		query = "INSERT INTO items (feedid,roleid,title,body,author,url,timestamp) VALUES (%i,%i,'%s','%s','%s','%s','%s')" %(feedid,roleid,ititle,ibody,iauthor,iurl,itimestamp)
+		print query,"</br>"
 		this.cursor.execute(query)
 		this.connection.commit()
 		return True
+	
+	def _escapequotes(this,str):
+		#escape all quotes for string str
+		newstr = str.replace('\\', '\\\\')
+		newstr = newstr.replace('"', '\\"')
+		newstr = newstr.replace("'", "\\'")
+		return newstr
