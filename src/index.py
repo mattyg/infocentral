@@ -1,48 +1,39 @@
 #!/usr/bin/python
 #main page
 
-import feedparser,urllib,urllib2,gdata.calendar,gdata.calendar.service,feedparser,datetime,calendar
-from xml.etree.ElementTree import ElementTree
-
+import cgi,view
 
 class index:
+	html = None
 	def __init__(this):
-		gcal = gdata.calendar.service.CalendarService('matt.gabrenya@gmail.com','fuckSchool')
-		#link = gcal.GenerateAuthSubURL("http://localhost/src/taketoken.py","https://www.google.com/calendar/feeds/",0,1)
-		#next = 'http://localhost/src/taketoken.py'
-		#scope = 'http://www.google.com/calendar/feeds/'
-		#secure = 0  # set secure=True to request secure AuthSub tokens
-		#session = 1
-		print "Content-type: text/html\n"
-		try:
-			gcal = gdata.calendar.service.CalendarService('matt.gabrenya@gmail.com','fuckSchool')
-			gcal.ProgrammaticLogin()	
-			items =  gcal.GetCalendarEventFeed('/calendar/feeds/matt.gabrenya@gmail.com/private/full')
-			print items.__dict__
-			print items.entry
-			for item in items.entry:
-				print item.title,item.link
-			#print feedxml.__dict__,'</br>','</br>'
-			#for feeditem in feedxml.entry:
-			#	print feeditem.title,feeditem.when[0].start_time,feeditem.link[0],'</br></br>'
-		except gdata.service.BadAuthentication, e:
-			print "Authentication error logging in: %s" % e
-			return
-		except Exception, e:
-			print "Error: %s" % e
-			return
-		#print "<a href='%s'>link</a>" %(link)
-		# Unlike the other calls, extract_auth_sub_token_from_url() will create an AuthSubToken or SecureAuthSubToken object.
-		# Use str(single_use_token) to return the token's string value.
+		this.html = []
+		#build header
+		this.html += ["Content-type: text/html\n"]
+		this.html += ['''<html>
+		<head>
+			<title>InfoCentral</title>
+			<script type='text/javascript' src='../js/jquery-1.4.4.min.js'></script>
+			<script type='text/javascript' src='../js/jquery-ui-1.8.6.custom.min.js'></script>
+			<script type='text/javascript' src='../js/main.js'></script>
+			<link rel='stylesheet' type='text/css' href='../css/ui-lightness/jquery-ui-1.8.6.custom.css' >
+		</head>
+		<body>''']
+		#build content
+		#make roles sidebar
+		this.html += ["<div id='roles'>"]
+		this.html + ['roles']
+		this.html += ['</div>']
+		#make tab bar from each feed
+		this.html += ['''<div id='tabs'>
+		<ul>
+			<li><a href="view.py?of=-1"><span>All</span></a></li>
+			<li><a href='view.py?of=1'><span>Email</span></a></li>
+			<li><a href='view.py?of=2'><span>Calendar</span></a></li>
+			<li><a href='view.py?of=0'><span>Articles</span></a></li>
+		</ul>''']
+	
+		#build footer
+		this.html += ["</body>\n</html>"]
+		#output
+		print "\n".join(this.html)
 index()
-#if feedurl[1].has('.google.com') and authgoogle == False: #if feed is from google, authenticate google user
-#	authgoogle = True
-#	authvalues = {'Email':}
-#	urllib.urlencode()
-#	urllib2.urlopen('url','data')
-#print str.find(str(feeds[-1]))
-
-#checks if user is logged in
-#logs user in
-##authenticates google if user has it as feed
-#>>> urldata = urllib.urlencode({'Email':'matt.gabrenya@gmail.com','Passwd':'fuckSchool','source':'infocentral','service':'cl'})
