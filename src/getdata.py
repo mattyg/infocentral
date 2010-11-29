@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #get data input
 
-import urllib,urllib2,feedparser,dbconnection,gdata.calendar,gdata.calendar.service
+import urllib,urllib2,feedparser,dbconnection,gdata.calendar,gdata.calendar.service,sys
 
 class getdata:
 	dbconnection = None
@@ -11,7 +11,9 @@ class getdata:
 		
 		#for testing only:
 		print "Content-type: text/html\n"
+		print "<html><head><meta http-equiv='Content-Type' content=text/html; charset=UTF-8/></head><body>"		
 		this.update()
+		print "</body></html>"
 		
 	def update(this): #poll all data feeds, add new data to db
 		#1 - get data feed urls from db
@@ -47,7 +49,6 @@ class getdata:
 			else:	#feed is regular RSS/ATOM
 				if str(feed[3]).strip() is not "" and feed[3] is not None: #if feed requires auth, modify url with auth
 					feedurl = feed[1].replace("://","://%s:%s@" %(feed[3],feed[4]))
-					print "wooo:",feedurl,"</br>"
 					feeddata = feedparser.parse(feedurl)
 				else:
 					feeddata = feedparser.parse(feed[1])

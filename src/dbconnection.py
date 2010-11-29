@@ -21,16 +21,16 @@ class dbconnection:
 		#determine feed type and get data
 		feedid = feed[0]
 		if feed[2] == 0:	#feed is a normal RSS/ATOM
-			ititle = item['title'].encode('utf-8')
-			ibody = item['summary_detail']['value'].encode('utf-8')
-			iauthor = item['author'].encode('utf-8')
-			iurl = item['link'].encode('utf-8')
+			ititle = item['title']
+			ibody = item['summary_detail']['value']
+			iauthor = item['author']
+			iurl = item['link']
 			itimestamp = calendar.timegm(item['date_parsed'])
 		elif feed[2] == 1:	#feed is gmail
-			ititle = item['title'].encode('utf-8')
-			ibody = item['summary_detail']['value'].encode('utf-8')
-			iauthor = item['author_detail']['email'].encode('utf-8')
-			iurl = item['link'].encode('utf-8')
+			ititle = item['title']
+			ibody = item['summary_detail']['value']
+			iauthor = item['author_detail']['email']
+			iurl = item['link']
 			itimestamp = calendar.timegm(item['date_parsed'])
 		elif feed[2] == 2:	#feed is gcal	
 			ititle = item.title.text
@@ -48,6 +48,10 @@ class dbconnection:
 		#remove img tags from data
 		p = re.compile(r'<.*?>')
 		ibody = p.sub('', ibody)
+		#decode strings to unicode objects
+		ititle = ititle.decode()
+		ibody = ibody.decode()
+		iauthor = iauthor.decode()
 		#check if item is in db
 		query = "SELECT id FROM items WHERE title=\"%s\" AND body=\"%s\"" %(ititle,ibody)
 		try:
@@ -77,30 +81,30 @@ class dbconnection:
 			#get all feed id's w/ type=getdata['of']
 			feedidlist = this._getfeedidlist(fromtype)
 			#get all items with feedid in list and roleid=getdata['for']
-			query = "SELECT * FROM items WHERE feedid in (%s) AND roleid=%s" %(feedidlist,forrole)
+			query = "SELECT * FROM items WHERE feedid in (%s) AND roleid=%s ORDER BY timestamp DESC" %(feedidlist,forrole)
 			this.cursor.execute(query)
 			return this.cursor.fetchall()
 		elif fromtype is not None: #get items from a FEED TYPE
 			fromtype = fromtype.value
 			feedlist = this._getfeedidlist(fromtype)
 			#get all items with feedid in list
-			query = "SELECT * FROM items WHERE feedid in (%s)" %(feedlist)
+			query = "SELECT * FROM items WHERE feedid in (%s) ORDER BY timestamp DESC" %(feedlist)
 			this.cursor.execute(query)
 			return this.cursor.fetchall()
 		elif forrole is not None: #get items for a ROLE
 			forrole = forrole.value
 			#get all items with roleid=getdata['for']
-			query = "SELECT * FROM items WHERE roleid=%s" %(forrole)
+			query = "SELECT * FROM items WHERE roleid=%s ORDER BY timestamp DESC" %(forrole)
 			this.cursor.execute(query)
 			return this.cursor.fetchall()
 	
 	def _getfeedidlist(this,fromtype):
 		#get all feed id's w/ type=getdata['of']
-		if fromtype == '-1':
+		if str(fromtype) == '-1':
 			param = ""
 		else:
-			param = "type=%s" %(fromtype)
-		query = "SELECT id FROM feeds WHERE %s" %(param)
+			param = "WHERE type=%s" %(fromtype)
+		query = "SELECT id FROM feeds %s" %(param)
 		this.cursor.execute(query)
 		res = this.cursor.fetchall()
 		feeds = []
@@ -116,3 +120,12 @@ class dbconnection:
 		for feedid,typeid in feedtypes:
 			typesdict[feedid].append(typeid)
 		return typesdict
+	
+	def getroles(this,userid):
+		query = "SELECT * FROM roles WHERE userid=%s" %(userid)
+		this.cursor.execute(query)
+		return this.cursor.fetchall()
+		#rolesdict = collections.defaultdict(list)
+		#for rid,ruserid,rname in roles:
+		#	rolesdict[rid].append(rname)
+		#return rolesdict

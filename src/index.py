@@ -16,6 +16,7 @@ class index:
 			<script type='text/javascript' src='../js/jquery-ui-1.8.6.custom.min.js'></script>
 			<script type='text/javascript' src='../js/main.js'></script>
 			<link rel='stylesheet' type='text/css' href='../css/ui-lightness/jquery-ui-1.8.6.custom.css' >
+			<link rel='stylesheet' type='text/css' href='../css/main.css' >
 		</head>
 		<body>''']
 		#build content
