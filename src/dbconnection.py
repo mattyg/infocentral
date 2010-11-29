@@ -11,7 +11,7 @@ class dbconnection:
 	def __init__(this):
 		this.connection = sqlite3.connect('../storage.db')
 		this.cursor = this.connection.cursor()
-
+		
 	def getfeeds(this): #get all feeds, return in array
 		query = "SELECT * FROM feeds"
 		this.cursor.execute(query)
@@ -124,8 +124,13 @@ class dbconnection:
 	def getroles(this,userid):
 		query = "SELECT * FROM roles WHERE userid=%s" %(userid)
 		this.cursor.execute(query)
-		return this.cursor.fetchall()
-		#rolesdict = collections.defaultdict(list)
-		#for rid,ruserid,rname in roles:
-		#	rolesdict[rid].append(rname)
-		#return rolesdict
+		roles  = this.cursor.fetchall()
+		rolesdict = collections.defaultdict(list)
+		for rid,ruserid,rname,rcolor in roles:
+			rolesdict[rid].append(rcolor)
+		return (roles,rolesdict)
+	
+	def setrole(this,itemid,roleid):
+		query = "UPDATE items SET roleid=%s WHERE id=%s" %(roleid,itemid)
+		this.cursor.execute(query)
+		this.connection.commit()
