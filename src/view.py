@@ -36,7 +36,7 @@ class view:
 		items = this.dbconnection.getitems(dof,dfor)
 		feedtypes = this.dbconnection.getfeedtypes()
 		userid = 1 #for testing purposes only
-		roles,rolecolors = this.dbconnection.getroles(userid)
+		roles = this.dbconnection.getroles(userid)
 		this.html += ["<div id='items'>"]
 		for item in items:
 			#encode data in proper form
@@ -45,7 +45,6 @@ class view:
 				itemauthor = ""
 			else:
 				itemauthor = "From %s" %(item[5])
-			rolecolor = rolecolors[item[2]][0]
 			#display item
 			this.html += ["<div id='item-%s'>" %(item[0])]
 			this.html += ["		<div id='header'>"]
@@ -54,12 +53,19 @@ class view:
 			this.html += ["			<form action='#' method='post'>"]
 			this.html += ["				<select name='roleid'>"]
 			#display role options
+			beenselected = False
 			for role in roles:
 				if int(role[0]) == int(item[2]):
-					selected = "selected"
+					selected = "selected=''"
+					beenselected = True
 				else:
 					selected = ""
-				this.html += ["				<option %s='' value='%s|#%s'>%s</option>" %(selected,role[0],role[3],role[2])]
+				this.html += ["				<option %s value='%s|#%s'>%s</option>" %(selected,role[0],role[3],role[2])]
+			if not beenselected:
+				selected = "selected=''"
+			else:
+				selected = ""
+			this.html += ["					<option %s value='none|white'>None</option>" %(selected)]
 			this.html += ["				</select>"]
 			this.html += ["			</form>"]
 			this.html += ["			<span id='time'>%s</span>" %(itemtime)]

@@ -2,8 +2,55 @@
 	margin: 0px;
 	padding: 0px;
 }
+.hidden {
+	display: none;
+}
 
 div#tabs ul{
 	padding: 0px;
 	margin: 0px;
+}
+
+a#roleslink {
+	
+}
+div#roles {
+	
+}
+div#roles ol {
+	position: relative;
+}
+div#roles ol li {
+	height: 30px;
+	margin-left: 20px;
+	margin-bottom: 3px;
+	
+	border:solid black 1px;
+}
+div#roles ol li img {
+	height: 20px;
+	position:relative;
+	top: 4px;
+}
+div#roles ol li a#remove {
+	float:right;
+	
+	position: relative;
+	top: 5px;
+	
+	text-decoration: none;
+}
+div#roles ol li a#remove:hover {
+	text-decoration: underline;
+}
+div#roles ol li a#edit {
+	float:right;
+	
+	position: relative;
+	top: 5px;
+	
+	text-decoration: none;
+}
+div#roles ol li a#edit:hover {
+	text-decoration: underline;
 }

@@ -124,11 +124,7 @@ class dbconnection:
 	def getroles(this,userid):
 		query = "SELECT * FROM roles WHERE userid=%s" %(userid)
 		this.cursor.execute(query)
-		roles  = this.cursor.fetchall()
-		rolesdict = collections.defaultdict(list)
-		for rid,ruserid,rname,rcolor in roles:
-			rolesdict[rid].append(rcolor)
-		return (roles,rolesdict)
+		return this.cursor.fetchall()
 	
 	def setrole(this,itemid,roleid):
 		query = "UPDATE items SET roleid=%s WHERE id=%s" %(roleid,itemid)

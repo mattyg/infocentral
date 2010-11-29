@@ -1,11 +1,13 @@
 #!/usr/bin/python
 #main page
 
-import cgi,view
+import cgi,view,dbconnection
 
 class index:
 	html = None
+	dbconnection = None
 	def __init__(this):
+		this.dbconnection = dbconnection.dbconnection()
 		this.html = []
 		#build header
 		this.html += ["Content-type: text/html\n"]
@@ -20,9 +22,16 @@ class index:
 		</head>
 		<body>''']
 		#build content
+		#get roles data
+		userid = 1 #testing only
+		roles = this.dbconnection.getroles(userid)
 		#make roles sidebar
-		this.html += ["<div id='roles'>"]
-		this.html + ['roles']
+		this.html += ["<a id='roleslink' href='#'>Roles</a>"]
+		this.html += ["<div id='roles' title='Roles'>"]
+		this.html += ["		<ol>"]
+		for role in roles:
+			this.html += ["		<li><span class='hidden'>%s|#%s</span><img id='handle' src='../img/handle.gif'></img>%s<a id='remove' href='#'>[remove]</a><a id='edit' href='#'>[edit]</a></li>" %(role[0],role[3],role[2])]
+		this.html += ["		</ol>"]                              
 		this.html += ['</div>']
 		#make tab bar from each feed
 		this.html += ['''<div id='tabs'>
