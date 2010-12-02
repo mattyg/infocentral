@@ -20,7 +20,8 @@ $(function() {
 			        click: function() {
 						//add a new role
 					}
-	   		}]
+	   		}],
+			height: 'auto'
 	});
 	var roledata = "";
 	$("div#roles ol li").each(function() {
@@ -35,7 +36,7 @@ $(function() {
 		//edit role
 	});
 	//roles link dialog box
-	$("a#roleslink").click(function() {
+	$("div#roleslink").click(function() {
 		roledialog.dialog("open");
 	});
 });

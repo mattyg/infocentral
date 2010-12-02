@@ -26,7 +26,7 @@ class index:
 		userid = 1 #testing only
 		roles = this.dbconnection.getroles(userid)
 		#make roles sidebar
-		this.html += ["<a id='roleslink' href='#'>Roles</a>"]
+		this.html += ["<div id='roleslink'><a href='#'>Roles</a></div>"]
 		this.html += ["<div id='roles' title='Roles'>"]
 		this.html += ["		<ol>"]
 		for role in roles:

@@ -14,7 +14,6 @@ class view:
 		<head>
 			<link rel='stylesheet' type='text/css' href='../css/items.css' />
 			<script type='text/javascript' src='../js/jquery-1.4.4.min.js'></script>
-			<script type='text/javascript' src='../js/jquery.iframe.js'></script>
 			<script type='text/javascript' src='../js/items.js'></script>
 		</head>
 		<body>''']

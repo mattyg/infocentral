@@ -9,10 +9,22 @@
 div#tabs ul{
 	padding: 0px;
 	margin: 0px;
+	position: static;
+	z-index: 1;
 }
 
-a#roleslink {
-	
+div#roleslink a{
+	border: solid black 1px;
+	background-color: lightgrey;
+	color: blue;
+	padding: 6px 8px 6px 8px;
+	font-size: 1.3em;
+	text-decoration: none;
+		
+	position: absolute;
+	right: 10px;
+	top: 8px;
+	z-index: 3;
 }
 div#roles {
 	
