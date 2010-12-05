@@ -32,7 +32,7 @@ class index:
 		this.html += ["<div id='roles' title='Roles'>"]
 		this.html += ["		<ol>"]
 		for role in roles:
-			this.html += ["		<li><span class='hidden'>%s|#%s</span><img id='handle' src='../img/handle.gif'></img>%s<a id='remove' href='#'>[remove]</a><a id='edit' href='#'>[edit]</a></li>" %(role[0],role[3],role[2])]
+			this.html += ["		<li><span class='hidden'>%s|#%s</span><img id='handle' src='../img/handle.gif'></img>%s<a id='remove' href='#'>[remove]</a></li>" %(role[0],role[3],role[2])]
 		this.html += ["		</ol>"]  
 		this.html += ["		<div id='addupdaterole'>"]
 		this.html += ["			<label for='name'>Name:<input name='name' id='name' type='text' /></label>"]

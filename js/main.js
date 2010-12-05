@@ -60,6 +60,13 @@ $(function() {
 		});
 	});
 	
+	//edit role
+	$("div#roles ol li a#edit").click(function() {
+		$(this).parent().parent().parent().find("div#addupdaterole").val();
+		$(this).find("div#addupdaterole").show();
+		$(this).parent().find("div.ui-dialog-buttonpane").hide();
+	});
+	
 	//remove role
 	$("a#remove").click(function() {
 		//remove role from view
@@ -77,9 +84,6 @@ $(function() {
 		tabs.tabs('load',selected);
 	});
 	
-	//edit role
-	$("div#roles ol li a#edit").click(function() {
-	});
 
 	//roles link dialog box
 	$("div#roleslink").click(function() {

@@ -21,9 +21,7 @@ class viewtools:
 				roleid = this.dbconnection.addrole(userid,data['rolename'].value,data['rolecolor'].value)
 				#add attrroles
 				attrdata = []
-				print 'woot'
 				for counter in range(10):
-					print 'count'
 					if data.has_key('attr'+str(counter)):
 						#turn params into array
 						if data['attr'+str(counter)].value == "title" or data['attr'+str(counter)].value == "body" or data['attr'+str(counter)].value == "author": 
