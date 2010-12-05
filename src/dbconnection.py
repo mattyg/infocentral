@@ -122,7 +122,7 @@ class dbconnection:
 		return typesdict
 	
 	def getroles(this,userid):
-		query = "SELECT * FROM roles WHERE userid=%s" %(userid)
+		query = "SELECT * FROM roles WHERE userid=%s ORDER BY position ASC" %(userid)
 		this.cursor.execute(query)
 		return this.cursor.fetchall()
 	
@@ -147,5 +147,10 @@ class dbconnection:
 		
 	def addattrrole(this,roleid,attrdata): #attrdata = [] of strings, each string is attr=value or attr=%value%
 		query = "INSERT INTO attrroles (roleid,attr,value) VALUES (%s,'%s','%s')" %(roleid,attrdata[0],attrdata[1])
+		this.cursor.execute(query)
+		this.connection.commit()
+	
+	def editroleposition(this,roleid,roleposition):
+		query = "UPDATE roles SET position=%s WHERE id=%s" %(roleposition,roleid)
 		this.cursor.execute(query)
 		this.connection.commit()

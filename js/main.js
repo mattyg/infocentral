@@ -11,7 +11,21 @@ $(function() {
 	});
 	
 	//roles-modifying dialog box
-	$("div#roles ol").sortable({handle: 'img'});
+	var positions = "";
+	var res = $("div#roles ol").sortable({handle: 'img',
+		update: function(event,ui) {
+			var countr = 0;
+			$(this).children('li').each(function() {
+				var roleid = $(this).find('span.hidden').text().split('|')[0];
+				$.ajax({
+					type: "POST",
+					url: "viewtools.py",
+					data: "roleid="+roleid+"&do=editpositions"+"&roleposition="+countr
+				});
+				countr = countr+1;
+			});                                     			
+		}
+	});
 	var rolecolor = $.farbtastic("div#addupdaterole div#colorchoose","input#color");
 	var roledialog = $("div#roles").dialog({autoOpen: false,
 			buttons: [
@@ -60,13 +74,6 @@ $(function() {
 		});
 	});
 	
-	//edit role
-	$("div#roles ol li a#edit").click(function() {
-		$(this).parent().parent().parent().find("div#addupdaterole").val();
-		$(this).find("div#addupdaterole").show();
-		$(this).parent().find("div.ui-dialog-buttonpane").hide();
-	});
-	
 	//remove role
 	$("a#remove").click(function() {
 		//remove role from view
@@ -84,7 +91,6 @@ $(function() {
 		tabs.tabs('load',selected);
 	});
 	
-
 	//roles link dialog box
 	$("div#roleslink").click(function() {
 		

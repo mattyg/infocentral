@@ -33,4 +33,6 @@ class viewtools:
 							this.dbconnection.addattrrole(roleid,(data['attr'+str(counter)].value,value))
 					else:
 						break
+			elif data['do'].value == 'editpositions': #edit role positions (order)
+				this.dbconnection.editroleposition(data['roleid'].value,data['roleposition'].value)
 viewtools()
