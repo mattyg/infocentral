@@ -19,7 +19,7 @@ $(function() {
 		$.ajax({
 			type: "POST",
 			url: "viewtools.py",
-			data: "roleid="+roledata[0]+"&itemid="+itemid[1]
+			data: "roleid="+roledata[0]+"&itemid="+itemid[1]+"&do=setrole"
 		});
 	});
 	//show content and permalink on mouseover of item header

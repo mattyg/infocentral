@@ -27,7 +27,7 @@ div#roleslink a{
 	z-index: 3;
 }
 div#roles {
-	
+	display:none;
 }
 div#roles ol {
 	position: relative;
@@ -65,4 +65,42 @@ div#roles ol li a#edit {
 }
 div#roles ol li a#edit:hover {
 	text-decoration: underline;
+}
+
+div#roles div#addupdaterole {
+	display:none;
+	float: left;
+	
+	background-color: lightgrey;
+	padding: 8px;
+	margin-top: 15px;
+	/*width: 255px;*/
+	width: 410px;
+}
+div#roles div#addupdaterole a#submit{
+	border: solid black 1px;
+	padding: 6px 8px 6px 8px;
+	background-color: lightblue;
+	margin-top: 10px;
+	
+	float: right;
+}
+div#roles div#addupdaterole div#colorchoose{
+	width: 200;
+	padding-left: 30px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+div#roles div#addupdaterole div#attr-1, div#attr-2,div#attr-3,div#attr-4,div#attr-5,div#attr-6,div#attr-7,div#attr-8,div#attr-9,div#attr-10 {
+	display: none;
+	margin-top: 8px;
+}
+div#roles div#addupdaterole div#attrs {
+	padding-top: 10px;
+	margin-top: 18px;
+	border-top: solid black 1px;
+}
+div#roles div#addupdaterole div#attrs input{
+	width: 160px;
 }

@@ -31,7 +31,7 @@ class getdata:
 					for item in items.entry:
 						#print item
 						#for testing only:
-						roleid = this.anlysis.getrole(item)
+						#roleid = this.anlysis.getrole(item)
 						roleid = 2 					
 						#do role analysis on new item
 						#roleid = this.analysis...

@@ -130,3 +130,22 @@ class dbconnection:
 		query = "UPDATE items SET roleid=%s WHERE id=%s" %(roleid,itemid)
 		this.cursor.execute(query)
 		this.connection.commit()
+	
+	def removerole(this,roleid):
+		query = "DELETE FROM roles WHERE id=%s" %(roleid)
+		this.cursor.execute(query)
+		query = "UPDATE items SET roleid=-1 WHERE roleid=%s" %(roleid)
+		this.cursor.execute(query)
+		this.connection.commit()
+		
+	def addrole(this,userid,name,color):
+		query = "INSERT INTO roles (userid,name,color) VALUES (%s,'%s','%s')" %(userid,name,color)
+		this.cursor.execute(query)
+		lrid = this.cursor.lastrowid
+		this.connection.commit()
+		return lrid
+		
+	def addattrrole(this,roleid,attrdata): #attrdata = [] of strings, each string is attr=value or attr=%value%
+		query = "INSERT INTO attrroles (roleid,attr,value) VALUES (%s,'%s','%s')" %(roleid,attrdata[0],attrdata[1])
+		this.cursor.execute(query)
+		this.connection.commit()
