@@ -31,5 +31,4 @@ $(function() {
 	 	$(this).toggle();
 		$(this).parent().find('div#header a#permalink').toggle();
 	});
-	
 });

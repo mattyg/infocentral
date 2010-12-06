@@ -35,4 +35,18 @@ class viewtools:
 						break
 			elif data['do'].value == 'editpositions': #edit role positions (order)
 				this.dbconnection.editroleposition(data['roleid'].value,data['roleposition'].value)
+			elif data['do'].value == 'removefeed': #remove feed
+				this.dbconnection.removefeed(data['feedid'].value)
+			elif data['do'].value == 'addfeed': #add feed
+				#userid,feedtype,url,roleid,secureuser,securepass
+				secureuser = ""
+				securepass = ""
+				roleid = ""
+				if data.has_key('secureuser'):
+					secureuser = data['secureuser'].value
+				if data.has_key('securepass'):
+					securepass = data['securepass'].value
+				if data.has_key('roleid'):
+					roleid = data['roleid'].value
+				this.dbconnection.addfeed(data['userid'].value,data['feedtype'].value,data['feedurl'].value,roleid,secureuser,securepass)
 viewtools()

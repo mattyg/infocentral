@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import dbconnection,cgi,time
+import dbconnection,cgi,time,operator,datetime,time
 
 #views to display data
 class view:
@@ -22,20 +22,32 @@ class view:
 		#get desired items from database
 		dof = None
 		dfor = None
+		drecent = None
 		haskey = False
+		currentattrs = ""
 		if getdata.has_key('of'):
 			dof = getdata['of']
 			haskey = True
+			currentattrs = "of="+getdata['of'].value
 		if getdata.has_key('for'):
 			dfor = getdata['for']
 			haskey = True
+			if currentattrs != '':
+				currentattrs = currentattrs+"&for="+getdata['for'].value
+			else:
+				currentattrs = "for="+getdata['for'].value
+		if getdata.has_key('recent'):
+			drecent = getdata['recent'].value
 		if not haskey:
 			return
-		items = this.dbconnection.getitems(dof,dfor)
+		items = this.dbconnection.getitems(dof,dfor,drecent)
+		
 		feedtypes = this.dbconnection.getfeedtypes()
 		userid = 1 #for testing purposes only
 		roles = this.dbconnection.getroles(userid)
 		this.html += ["<div id='items'>"]
+		#put current url in hidden span
+		this.html += ["		<span id='hiddenurl' class='hidden'>view.py?%s</span>" %(currentattrs)]
 		for item in items:
 			#encode data in proper form
 			itemtime = time.strftime("%I:%M%p - %b %d '%y",time.gmtime(float(item[7])))
@@ -73,6 +85,8 @@ class view:
 			this.html += ["			<p>%s</p>" %(item[4])]
 			this.html += ["		</div>"]
 			this.html += ["</div>"]
+		numitems = len(items)
+		this.html += ["		<span id='hiddenrecent' class='hidden'>%s</span>" %(numitems)]
 		this.html += ["</div>"]
 		
 		#add footer

@@ -9,17 +9,16 @@ class getdata:
 	def __init__(this):
 		this.dbconnection = dbconnection.dbconnection()
 		
-		#for testing only:
 		print "Content-type: text/html\n"
-		print "<html><head><meta http-equiv='Content-Type' content=text/html; charset=UTF-8/></head><body>"		
-		this.update()
-		print "</body></html>"
+		print this.update()
 		
 	def update(this): #poll all data feeds, add new data to db
 		#1 - get data feed urls from db
-		feeds = this.dbconnection.getfeeds()
+		userid = 1 #for testing only!
+		feeds = this.dbconnection.getfeeds(userid)
 		#2 - check data feeds for new items
 		feeddata = []
+		newitems = 0
 		for feed in feeds:
 			if feed[2] == 2:	#feed is gcal
 				try:
@@ -31,7 +30,7 @@ class getdata:
 					for item in items.entry:
 						#print item
 						#for testing only:
-						#roleid = this.anlysis.getrole(item)
+						#roleid = this.anlysis.getrole(item,feed)
 						roleid = 2 					
 						#do role analysis on new item
 						#roleid = this.analysis...
@@ -39,8 +38,9 @@ class getdata:
 						#print item.title,item.link,item.when[0].start_time,item.link[0],"</br></br>"
 						isnew = this.dbconnection.additem(feed,roleid,item)
 						if isnew is False:
-							print "broken1","</br>"
 							break
+						else:
+							newitems = newitems+1
 				except gdata.service.BadAuthentication, e:
 					print "Authentication error logging in: %s" % e
 					return
@@ -63,6 +63,8 @@ class getdata:
 						#print item['title'],item['summary_detail']['value'].encode('utf-8'),"</br></br>"
 						isnew = this.dbconnection.additem(feed,roleid,item)
 						if isnew is False:
-							print 'broken2',"</br>"
 							break
+						else:
+							newitems = newitems+1
+		return newitems
 getdata()

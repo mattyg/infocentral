@@ -2,6 +2,9 @@
 	padding: 0px;
 	margin:0px;
 }
+.hidden {
+	display: none;
+}
 #items #content {
 	display:none;
 	
@@ -52,3 +55,4 @@
 	text-decoration: underline;
 }
 /* item content*/
+

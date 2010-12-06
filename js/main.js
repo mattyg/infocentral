@@ -1,4 +1,17 @@
+function getdata(){
+ 		$.ajax({
+		url: "getdata.py",
+		success: function(data,txtstatus,xmlresponse) {
+			if(parseInt(data) > 0) {
+				location.reload();
+			}
+		}
+	});
+}
 $(function() {
+	//update getdata.py and reload tab every 5 mins
+	getdata();
+	setInterval("getdata()",300000);
 	//jquery ui tabs
 	var tabs = $("#tabs").tabs({
 		ajaxOptions: {
@@ -63,7 +76,6 @@ $(function() {
 			}
 			counter = counter+1;
 		});
-		alert("rolename="+rolename+"&rolecolor="+rolecolor[1]+"&do=addrole"+attrparams);
 		$.ajax({
 			type: "POST",
 			url: "viewtools.py",
@@ -75,7 +87,7 @@ $(function() {
 	});
 	
 	//remove role
-	$("a#remove").click(function() {
+	$("div#roles ol li a#remove").click(function() {
 		//remove role from view
 		$(this).parent().hide();
 		roledata = $(this).parent().find('span.hidden').text();
@@ -103,5 +115,70 @@ $(function() {
 		var showdiv = $(this).attr('id');
 		showdiv = showdiv.split('-');
 		$(this).parent().parent().find('div#attr-'+showdiv[1]).show();
-	})
+	});
+	
+	///////feeds dialog box
+	//build dialog
+	var feeddialog = $("div#feeds").dialog({autoOpen: false,
+			buttons: [
+				{
+			        text: "New Feed",
+			        click: function() {
+						//show new dialog for adding feed info
+						$(this).find("div#addupdatefeed").show();
+						$(this).parent().find("div.ui-dialog-buttonpane").hide();
+					}
+	   		}],
+			width: 650
+	});
+	//open dialog
+	$("div#feedslink").click(function() {
+		feeddialog.dialog('open');
+		$("div#feeds").show();
+	});
+	//remove feed
+	$("div#feeds ul li a#remove").click(function() {
+		//remove role from view
+		$(this).parent().hide();
+		feeddata = $(this).parent().find('span.hidden').text();
+		//remove role from db and set all items with that role to -1 (none)
+		$.ajax({
+			type: "POST",
+			url: "viewtools.py",
+			data: "feedid="+feeddata+"&do=removefeed"
+		});
+		//refresh tab
+		var selected = tabs.tabs("option","selected");
+		tabs.tabs('load',selected);
+	});
+	//actually add feed
+	$("div#addupdatefeed a#submit").click(function() {
+		var feedtype = $(this).parent().find("select#type").val();
+		var feedurl = $(this).parent().find("input#url").val();
+		var feeduser = $(this).parent().find("input#secureuser").val();
+		var feedpass = $(this).parent().find("input#securepass").val();
+		var feedroleid = $(this).parent().find("select#roleid").val();
+		var feeduserid = $(this).parent().find("span.hidden").text();
+		$.ajax({
+			type: "POST",
+			url: "viewtools.py",
+			data: "userid="+feeduserid+"&feedtype="+feedtype+"&feedurl="+feedurl+"&secureuser="+feeduser+"&securepass="+feedpass+"&roleid="+feedroleid+"&do=addfeed",
+			complete: function() {
+				location.reload();
+			}
+		});
+	});
+	
+	//show 15 more old items
+	$("div#moreitems").click(function() {
+		var sel = parseInt(tabs.tabs("option","selected"));
+		sel = eval(sel+1);
+		var currentnum = $("div#tabs div#ui-tabs-"+sel.toString()+" div#items").find("span#hiddenrecent").text();
+		currentnum = parseInt(currentnum);
+		currentnum = eval(currentnum+15);
+		var currenturl = $("div#tabs div#ui-tabs-"+sel.toString()+" div#items").find('span#hiddenurl').text();
+		newurl = currenturl+"&recent="+currentnum;
+		tabs.tabs('url',eval(sel-1),newurl);
+		tabs.tabs('load',eval(sel-1));
+	});
 });

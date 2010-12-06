@@ -27,7 +27,34 @@ class index:
 		#get roles data
 		userid = 1 #testing only
 		roles = this.dbconnection.getroles(userid)
-		#make roles sidebar
+		feeds = this.dbconnection.getfeeds(userid)
+		#make feeds controllor dialog
+		this.html += ["<div id='feedslink'><a href='#'>Feeds</a></div>"]
+		this.html += ["<div id='feeds' title='Feeds'>"]
+		this.html += ["		<ul>"]
+		for feed in feeds:
+			this.html += ["		<li><img id='typeicon' src='../img/feedtype%s.gif' /><span id='url'>%s</span><span class='hidden'>%s</span><a id='remove' href='#'>[remove]</a></li>" %(feed[2],feed[1],feed[0])]
+		this.html += ["		</ul>"]
+		this.html += ["		<div id='addupdatefeed'>"]
+		this.html += ["			<span class='hidden'>%s</span>" %(userid)]
+		this.html += ["			Type:<select id='type' name='type'>"]
+		this.html += ["				<option value='0'>RSS/ATOM</option>"]
+		this.html += ["				<option value='1'>GMail</option>"]
+		this.html += ["				<option value='2'>GCal</option>"]
+		this.html += ["			</select>"]
+		this.html += ["			</br><label for='url'>URL:<input id='url' name='url' type='text' /></label>"]
+		this.html += ["			</br>Role (if applicable):<select id='roleid' name='roleid'"]
+		this.html += ["				<option selected='' value=''>None</option>"]
+		for role in roles:
+				this.html += ["		<option value='%s'>%s</option>" %(role[0],role[2])]
+		this.html += ["			</select>"]
+		this.html += ["			</br>Login Info (if necessary):"]
+		this.html += ["			</br><label for='secureuser'>User:<input id='secureuser' name='secureuser' type='text' /></label>"]
+		this.html += ["			</br><label for='securepass'>Pass:<input id='securepass' name='securepass' type='text' /></label>"]
+		this.html += ["			</br><a id='submit' href='#'>Create Feed</a>"]
+		this.html += ["		</div>"]
+		this.html += ["</div>"]
+		#make roles controllor dialog 
 		this.html += ["<div id='roleslink'><a href='#'>Roles</a></div>"]
 		this.html += ["<div id='roles' title='Roles'>"]
 		this.html += ["		<ol>"]
@@ -79,7 +106,9 @@ class index:
 			<li><a href='view.py?of=2'><span>Calendar</span></a></li>
 			<li><a href='view.py?of=0'><span>Articles</span></a></li>
 		</ul>''']
-	
+		this.html += ["<div id='moreitems'>"]
+		this.html += ["		<a href='#'>Get 15 More Old Items</a>"]
+		this.html += ["</div>"]
 		#build footer
 		this.html += ["</body>\n</html>"]
 		#output

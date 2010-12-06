@@ -104,3 +104,75 @@ div#roles div#addupdaterole div#attrs {
 div#roles div#addupdaterole div#attrs input{
 	width: 160px;
 }
+
+/*feeds dialog*/
+div#feedslink a {
+	border: solid black 1px;
+	background-color: lightgrey;
+	color: blue;
+	padding: 6px 8px 6px 8px;
+	font-size: 1.3em;
+	text-decoration: none;
+		
+	position: absolute;
+	right: 150px;
+	top: 8px;
+	z-index: 3;
+}
+div#feeds {
+	display: none;
+}
+div#feeds ul li {
+	margin-left: 15px;
+	background-color: lightblue;
+	margin-bottom: 8px;
+}
+div#feeds ul li img {
+	width: 30px;
+	vertical-align: center;
+	margin-right: 3px;
+	padding-top: 5px;
+	padding-left: 5px;
+	padding-bottom: 5px;
+}
+div#feeds ul li span#url {
+	position: relative;
+	top: -10px;
+	font-size: .7em;
+}
+div#feeds ul li a#remove {
+	float:right;
+	
+	position: relative;
+	top: 5px;
+	right: 5px;
+	
+	text-decoration: none;
+}
+div#feeds ul li a#remove:hover {
+	text-decoration: underline;
+}
+div#feeds div#addupdatefeed {
+	display: none;
+}
+div#feeds div#addupdatefeed input{
+	width: 400px;
+}
+div#feeds div#addupdatefeed a#submit{
+	border: solid black 1px;
+	padding: 6px 8px 6px 8px;
+	background-color: lightblue;
+	margin-top: 10px;
+	
+	float: right;
+}
+div#moreitems {
+	background-color: lightblue;
+	border: solid black 1px;
+	margin: 5px 8px 5px 8px;
+	padding: 15px 0px 15px 0px;
+	
+	text-align: center;
+	
+	font-size: 1.5em;
+}
