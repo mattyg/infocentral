@@ -1,9 +1,16 @@
 function getdata(){
- 		$.ajax({
+	$("div#newitems").text("checking for updates...");
+	$("div#newitems").show();
+ 	$.ajax({
 		url: "getdata.py",
 		success: function(data,txtstatus,xmlresponse) {
 			if(parseInt(data) > 0) {
 				location.reload();
+				$("div#newitems").text("Updated ["+data+" new items]");
+				$("div#newitems").show();
+			}
+			else {
+				$("div#newitems").hide();
 			}
 		}
 	});
@@ -11,7 +18,7 @@ function getdata(){
 $(function() {
 	//update getdata.py and reload tab every 5 mins
 	getdata();
-	setInterval("getdata()",300000);
+	setInterval("getdata()",60000);
 	//jquery ui tabs
 	var tabs = $("#tabs").tabs({
 		ajaxOptions: {
@@ -177,6 +184,7 @@ $(function() {
 		currentnum = parseInt(currentnum);
 		currentnum = eval(currentnum+15);
 		var currenturl = $("div#tabs div#ui-tabs-"+sel.toString()+" div#items").find('span#hiddenurl').text();
+		currenturl = currenturl.split("&recent=")[0];
 		newurl = currenturl+"&recent="+currentnum;
 		tabs.tabs('url',eval(sel-1),newurl);
 		tabs.tabs('load',eval(sel-1));

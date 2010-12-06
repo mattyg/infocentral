@@ -45,7 +45,11 @@ class view:
 				currentattrs = "orderby="+getdata['orderby'].value
 			haskey = True
 		if getdata.has_key('recent'):
-			drecent = getdata['recent'].value			
+			drecent = getdata['recent'].value	
+			if currentattrs != '':
+				currentattrs = currentattrs+"&recent="+getdata['recent'].value
+			else:
+				currentattrs = "recent="+getdata['recent'].value		
 		if not haskey:
 			return
 		items = this.dbconnection.getitems(dof,dfor,dorderby,drecent)

@@ -190,7 +190,7 @@ class dbconnection:
 			loc = url.find('google.com')
 			if loc != -1:
 				url = url[loc+10:]
-		query = "INSERT INTO feeds (url,type,secureuser,securepass) VALUES ('%s',%s,'%s','%s')" %(url,feedtype,secureuser,securepass)
+		query = "INSERT INTO feeds (userid,url,type,secureuser,securepass) VALUES (%s,'%s',%s,'%s','%s')" %(userid,url,feedtype,secureuser,securepass)
 		print query
 		this.cursor.execute(query)
 		feedid = this.cursor.lastrowid

@@ -182,7 +182,7 @@ div#roleselect {
 
 	position: absolute;
 	right: 210px;
-	top: 8px;
+	top: 5px;
 	z-index: 3;
 }
 div#roleselect select {
@@ -190,4 +190,19 @@ div#roleselect select {
 }
 div#roleselect option {
 	font-size: 1.2em;
+}
+
+/*new items notice*/
+div#newitems {	border: solid black 1px;
+	background-color: lightgreen;
+	color: black;
+	padding: 6px 8px 6px 8px;
+	font-size: 1.3em;
+		
+	position: absolute;
+	right: 350px;
+	top: 8px;
+	z-index: 3;
+	
+	display: none;
 }

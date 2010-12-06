@@ -28,7 +28,6 @@ class getdata:
 					#2.2 - get items	
 					items =  gcal.GetCalendarEventFeed(feed[1])
 					for item in items.entry:
-						#print item
 						#for testing only:
 						#roleid = this.anlysis.getrole(item,feed)
 						roleid = 2 					

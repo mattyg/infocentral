@@ -28,6 +28,10 @@ class index:
 		userid = 1 #testing only
 		roles = this.dbconnection.getroles(userid)
 		feeds = this.dbconnection.getfeeds(userid)
+		#make new items notice
+		this.html += ["<div id='newitems'>"]
+		this.html += ["Updated [3]"]
+		this.html += ["</div>"]
 		#make role selection dropdown
 		this.html += ["<div id='roleselect'>"]
 		this.html += ["		<select name='roleid'>"]
