@@ -181,4 +181,16 @@ $(function() {
 		tabs.tabs('url',eval(sel-1),newurl);
 		tabs.tabs('load',eval(sel-1));
 	});
+	
+	//sort by roleselect
+	$("div#roleselect select").change(function() {
+		roleid = $(this).val();
+		var sel = parseInt(tabs.tabs("option","selected"));
+		sel = eval(sel+1);
+		var currenturl = $("div#tabs div#ui-tabs-"+sel.toString()+" div#items").find('span#hiddenurl').text();
+		currenturl = currenturl.split('&for=');
+		newurl = currenturl[0]+"&for="+roleid;
+		tabs.tabs('url',eval(sel-1),newurl);
+		tabs.tabs('load',eval(sel-1));
+	})
 });

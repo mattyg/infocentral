@@ -74,8 +74,12 @@ class dbconnection:
 		return newstr
 		
 	#get items from type, for role
-	def getitems(this,fromtype=None,forrole=None,recent=None):
+	def getitems(this,fromtype=None,forrole=None,orderby=None,recent=None):
 		tempitems = None
+		if orderby != 'role':
+			orderby = 'items.timestamp'
+		else:
+			orderby = 'roles.position'
 		if fromtype is not None and forrole is not None: #get items from a FEED TYPE for a ROLE
 			fromtype = fromtype.value
 			forrole = forrole.value

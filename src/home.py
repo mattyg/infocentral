@@ -28,6 +28,15 @@ class index:
 		userid = 1 #testing only
 		roles = this.dbconnection.getroles(userid)
 		feeds = this.dbconnection.getfeeds(userid)
+		#make role selection dropdown
+		this.html += ["<div id='roleselect'>"]
+		this.html += ["		<select name='roleid'>"]
+		this.html += ["			<option selected='' value=''>All Roles</option>"]
+		for role in roles:
+				this.html += ["		<option value='%s'>%s</option>" %(role[0],role[2])]
+		this.html += ["				<option value='-1'>None</option>"]
+		this.html += ["		</select>"]
+		this.html += ["</div>"]
 		#make feeds controllor dialog
 		this.html += ["<div id='feedslink'><a href='#'>Feeds</a></div>"]
 		this.html += ["<div id='feeds' title='Feeds'>"]
@@ -107,7 +116,7 @@ class index:
 			<li><a href='view.py?of=0'><span>Articles</span></a></li>
 		</ul>''']
 		this.html += ["<div id='moreitems'>"]
-		this.html += ["		<a href='#'>Get 15 More Old Items</a>"]
+		this.html += ["		<a href='#'>Get More Old Items</a>"]
 		this.html += ["</div>"]
 		#build footer
 		this.html += ["</body>\n</html>"]

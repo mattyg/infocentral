@@ -23,6 +23,7 @@ class view:
 		dof = None
 		dfor = None
 		drecent = None
+		dorderby = None
 		haskey = False
 		currentattrs = ""
 		if getdata.has_key('of'):
@@ -36,11 +37,18 @@ class view:
 				currentattrs = currentattrs+"&for="+getdata['for'].value
 			else:
 				currentattrs = "for="+getdata['for'].value
+		if getdata.has_key('orderby'):
+			dorderby = getdata['orderby']
+			if currentattrs != '':
+				currentattrs = currentattrs+"&orderby="+getdata['orderby'].value
+			else:
+				currentattrs = "orderby="+getdata['orderby'].value
+			haskey = True
 		if getdata.has_key('recent'):
-			drecent = getdata['recent'].value
+			drecent = getdata['recent'].value			
 		if not haskey:
 			return
-		items = this.dbconnection.getitems(dof,dfor,drecent)
+		items = this.dbconnection.getitems(dof,dfor,dorderby,drecent)
 		
 		feedtypes = this.dbconnection.getfeedtypes()
 		userid = 1 #for testing purposes only

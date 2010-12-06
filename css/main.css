@@ -115,7 +115,7 @@ div#feedslink a {
 	text-decoration: none;
 		
 	position: absolute;
-	right: 150px;
+	right: 110px;
 	top: 8px;
 	z-index: 3;
 }
@@ -175,4 +175,19 @@ div#moreitems {
 	text-align: center;
 	
 	font-size: 1.5em;
+}
+
+div#roleselect {
+	padding: 6px 8px 6px 8px;
+
+	position: absolute;
+	right: 210px;
+	top: 8px;
+	z-index: 3;
+}
+div#roleselect select {
+	font-size: 1.1em;
+}
+div#roleselect option {
+	font-size: 1.2em;
 }
