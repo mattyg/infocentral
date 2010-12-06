@@ -74,7 +74,7 @@ class dbconnection:
 		return newstr
 		
 	#get items from type, for role
-	def getitems(this,fromtype=None,forrole=None,orderby=None,recent=None):
+	def getitems(this,userid,fromtype=None,forrole=None,orderby=None,recent=None):
 		tempitems = None
 		if orderby != 'role':
 			orderby = 'items.timestamp'
@@ -84,14 +84,14 @@ class dbconnection:
 			fromtype = fromtype.value
 			forrole = forrole.value
 			#get all feed id's w/ type=getdata['of']
-			feedidlist = this._getfeedidlist(fromtype)
+			feedidlist = this._getfeedidlist(userid,fromtype)
 			#get all items with feedid in list and roleid=getdata['for']
 			query = "SELECT * FROM items WHERE feedid in (%s) AND roleid=%s ORDER BY timestamp DESC" %(feedidlist,forrole)
 			this.cursor.execute(query)
 			tempitems = this.cursor.fetchall()
 		elif fromtype is not None: #get items from a FEED TYPE
 			fromtype = fromtype.value
-			feedlist = this._getfeedidlist(fromtype)
+			feedlist = this._getfeedidlist(userid,fromtype)
 			#get all items with feedid in list
 			query = "SELECT * FROM items WHERE feedid in (%s) ORDER BY timestamp DESC" %(feedlist)
 			this.cursor.execute(query)
@@ -99,7 +99,8 @@ class dbconnection:
 		elif forrole is not None: #get items for a ROLE
 			forrole = forrole.value
 			#get all items with roleid=getdata['for']
-			query = "SELECT * FROM items WHERE roleid=%s ORDER BY timestamp DESC" %(forrole)
+			feedlist = this._getfeedidlist(userid,'-1')
+			query = "SELECT * FROM items WHERE feedid in (%s) roleid=%s ORDER BY timestamp DESC" %(feedlist,forrole)
 			this.cursor.execute(query)
 			tempitems = this.cursor.fetchall()
 		#get subarray of items during or later than today
@@ -123,12 +124,12 @@ class dbconnection:
 					break
 		return items
 
-	def _getfeedidlist(this,fromtype):
+	def _getfeedidlist(this,userid,fromtype):
 		#get all feed id's w/ type=getdata['of']
 		if str(fromtype) == '-1':
-			param = ""
+			param = "WHERE userid=%s" %(userid)
 		else:
-			param = "WHERE type=%s" %(fromtype)
+			param = "WHERE type=%s AND userid=%s" %(fromtype,userid)
 		query = "SELECT id FROM feeds %s" %(param)
 		this.cursor.execute(query)
 		res = this.cursor.fetchall()
