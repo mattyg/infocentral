@@ -60,7 +60,7 @@ class dbconnection:
 			print "exception",e,"</br>"
 		res = this.cursor.fetchone()
 		if res is not None and res is not "": #item is already in db
-			return False
+			return None
 		query = "INSERT INTO items (feedid,roleid,title,body,author,url,timestamp) VALUES (%i,%i,'%s','%s','%s','%s','%s')" %(feedid,roleid,ititle,ibody,iauthor,iurl,itimestamp)
 		this.cursor.execute(query)
 		this.connection.commit()
@@ -168,7 +168,12 @@ class dbconnection:
 		for r in roles:
 			ids.append(r[0])
 		return ids
-		
+
+	def getattrroles(this,roleids):
+		query = "SELECT * FROM attrroles WHERE roleid IN (%s)" %(roleids)
+		this.cursor.execute(query)
+		return this.cursor.fetchall()
+
 	def setrole(this,itemid,roleid):
 		query = "UPDATE items SET roleid=%s WHERE id=%s" %(roleid,itemid)
 		this.cursor.execute(query)

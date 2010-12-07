@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #viewing support functions
 
-import cgi,dbconnection
+import cgi,dbconnection,Cookie,os
 
 class viewtools:
 	dbconnection = None
@@ -16,7 +16,11 @@ class viewtools:
 				this.dbconnection.removerole(data['roleid'].value)
 			elif data['do'].value == 'addrole': #add role
 				#get user id of currently logged in user
-				userid = 1 #testing only!
+				try:
+					cookies = Cookie.SimpleCookie(os.environ["HTTP_COOKIE"])
+					userid = cookies['userid'].value
+				except:
+					return
 				#add role 
 				roleid = this.dbconnection.addrole(userid,data['rolename'].value,data['rolecolor'].value)
 				#add attrroles
@@ -26,7 +30,8 @@ class viewtools:
 						#turn params into array
 						if data['attr'+str(counter)].value == "title" or data['attr'+str(counter)].value == "body" or data['attr'+str(counter)].value == "author": 
 							if data['comp'+str(counter)].value == "includes":
-								value = "%"+data['val'+str(counter)].value+"%"
+								#value = "%"+data['val'+str(counter)].value+"%" fuck it
+								value = data['val'+str(counter)].value
 							elif data['comp'+str(counter)].value == "equals":
 								value = data['val'+str(counter)].value
 							print roleid,(data['attr'+str(counter)].value,value)

@@ -76,7 +76,7 @@ $(function() {
 		var counter = 0;
 		$(this).parent().find("div#attrs div").each(function() {
 			attrdata[0] = $(this).find("select#attr").val(); //attr 
-			attrdata[1] = $(this).find(" input#value").val(); //value
+			attrdata[1] = $(this).find("input#value").val(); //value
 			attrdata[2] = $(this).find("select#comparison").val(); //comparison
 			if (attrdata[1] != "") {
 				attrparams = attrparams+"&attr"+counter+"="+attrdata[0]+"&val"+counter+"="+attrdata[1]+"&comp"+counter+"="+attrdata[2];	

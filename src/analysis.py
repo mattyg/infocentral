@@ -17,14 +17,10 @@ class analysis:
 		else:
 			#attempt to determine item role
 			roleids = this.dbconnection.getroleids(userid)
-			print ",".join(roleids)
+			roleids = str(",".join(str(item) for item in roleids))
 			attrroles = this.dbconnection.getattrroles(roleids)
 			for key in attrroles:
-				if (key[4] in item[3]) or (key[4] in item[4]) or (key[4] in item[5]) or (key[4] in item[6]):
-					itemid = item[0]
-					roleid = keys[1]
-					this.dbconnection.setrole(this,itemid,roleid)
-				else:
-					itemid = item[0]
-					roleid = -1
-					this.dbconnection.setrole(this,itemid,roleid)
+				if (str(key[3]) in str(item[3])) or (str(key[3]) in str(item[4])) or (str(key[3]) in str(item[5])) or (str(key[3]) in str(item[6])):
+					itemid = str(item[0])
+					roleid = str(key[1])
+					this.dbconnection.setrole(itemid,roleid)

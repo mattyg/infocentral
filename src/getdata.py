@@ -41,7 +41,7 @@ class getdata:
 						#add item to db
 						#print item.title,item.link,item.when[0].start_time,item.link[0],"</br></br>"
 						isnew = this.dbconnection.additem(feed,roleid,item)
-						if type(isnew) is not IntType:
+						if isnew is None:
 							break
 						else:
 							newitems = newitems+1
@@ -61,13 +61,13 @@ class getdata:
 				if feeddata['items']: #if there are new entries
 					for item in feeddata['items']:
 						#for testing only:
-						roleid = -1 					
+						roleid = -1				
 						#do role analysis on new item
 						#roleid = this.analysis...
 						#add item to db
 						#print item['title'],item['summary_detail']['value'].encode('utf-8'),"</br></br>"
 						isnew = this.dbconnection.additem(feed,roleid,item)
-						if type(isnew) is not IntType:
+						if isnew is None:
 							break
 						else:
 							newitems = newitems+1
