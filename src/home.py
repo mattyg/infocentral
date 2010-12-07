@@ -31,6 +31,8 @@ class index:
 			userid = int(cookies['userid'].value)
 			roles = this.dbconnection.getroles(userid)
 			feeds = this.dbconnection.getfeeds(userid)
+			#make logout link
+			this.html += ["<a id='logout' href='../src/logout.py'>Log Out</a>"]
 			#make new items notice
 			this.html += ["<div id='newitems'>"]
 			this.html += ["Updated [3]"]
@@ -130,5 +132,5 @@ class index:
 			#output
 			print "\n".join(this.html)
 		except:
-			print "Location: ../cgi-bin/index.cgi\n"
+			print "Location: ../src/index.py\n"
 index()

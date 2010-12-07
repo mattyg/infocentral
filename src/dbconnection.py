@@ -59,12 +59,12 @@ class dbconnection:
 		except Exception, e:
 			print "exception",e,"</br>"
 		res = this.cursor.fetchone()
-		if res is not None and res is not "": #item is in db
+		if res is not None and res is not "": #item is already in db
 			return False
 		query = "INSERT INTO items (feedid,roleid,title,body,author,url,timestamp) VALUES (%i,%i,'%s','%s','%s','%s','%s')" %(feedid,roleid,ititle,ibody,iauthor,iurl,itimestamp)
 		this.cursor.execute(query)
 		this.connection.commit()
-		return True
+		return this.cursor.lastrowid
 	
 	def _escapequotes(this,str):
 		#escape all quotes for string str
@@ -72,6 +72,11 @@ class dbconnection:
 		newstr = newstr.replace('"', '\\"')
 		newstr = newstr.replace("'", "\\'")
 		return newstr
+		
+	def getitem(this,itemid):
+		query = "SELECT * FROM items WHERE id=%s" %(itemid)
+		this.cursor.execute(query)
+		return this.cursor.fetchone()
 		
 	#get items from type, for role
 	def getitems(this,userid,fromtype=None,forrole=None,orderby=None,recent=None):
@@ -138,6 +143,11 @@ class dbconnection:
 			feeds.append(str(feed[0]))
 		return ','.join(feeds)
 		
+	def getfeedrole(this,feedid):
+		query = "SELECT * FROM feedroles WHERE feedid=%s" %(feedid)
+		this.cursor.execute(query)
+		return this.cursor.fetchone()
+		
 	def getfeedtypes(this):
 		query = "SELECT id,type FROM feeds"
 		this.cursor.execute(query)
@@ -152,6 +162,13 @@ class dbconnection:
 		this.cursor.execute(query)
 		return this.cursor.fetchall()
 	
+	def getroleids(this,userid):
+		roles = this.getroles(userid)
+		ids = []
+		for r in roles:
+			ids.append(r[0])
+		return ids
+		
 	def setrole(this,itemid,roleid):
 		query = "UPDATE items SET roleid=%s WHERE id=%s" %(roleid,itemid)
 		this.cursor.execute(query)

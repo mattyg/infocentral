@@ -206,3 +206,14 @@ div#newitems {	border: solid black 1px;
 	
 	display: none;
 }
+
+/*logout link*/
+a#logout {
+	color: red;
+	background-color: whitesmoke;
+	position: absolute;
+	padding: 2px 4px 2px 4px;
+	left: 370px;
+	top: 6px;
+	z-index: 3;
+}
